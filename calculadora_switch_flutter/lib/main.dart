@@ -30,21 +30,24 @@ class _CalculadoraState extends State<Calculadora> {
     double? resultado;
 
     setState(() {
-      if (operacao == "Somar") {
-        resultado = numero1 + numero2;
-      } else if (operacao == 'Sub') {
-        resultado = numero1 - numero2;
-      } else if (operacao == 'Mult') {
-        resultado = numero1 * numero2;
-      } else if (operacao == "Div") {
-        // if(numero2 ==0){
-        //   resultado = numero1/numero2;
-        // }else{
-        //   resultado = null;
-        // }
-        resultado = numero2 != 0 ? numero1 / numero2 : null;
-      } else {
-        resultado = pow(numero1, numero2) as double?;
+      switch (operacao) {
+        case "Somar":
+          resultado = numero1 + numero2;
+          break;
+        case "Sub":
+          resultado = numero1 - numero2;
+          break;
+        case "Mult":
+          resultado = numero1 + numero2;
+          break;
+        case "Div":
+          resultado = numero2 != 0 ? numero1 / numero2 : null;
+          break;
+        case "Pot":
+          resultado = pow(numero1, numero2) as double?;
+          break;
+        default:
+          resultado = null;
       }
 
       _resultado =
