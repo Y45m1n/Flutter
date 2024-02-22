@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:app_lista1/tarefaController.dart';
+import 'package:provider/provider.dart';
 
 class ListaTarefasScreen extends StatelessWidget {
   // Controlador para o campo de texto de nova tarefa
@@ -25,7 +27,7 @@ class ListaTarefasScreen extends StatelessWidget {
                 suffixIcon: IconButton(
                   onPressed: () {
                     // Chamando o método adicionarTarefa do Provider para atualizar o estado
-                    Provider.of<ListaTarefasModel>(context, listen: false)
+                    Provider.of<ListaTarefasController>(context, listen: false)
                         .adicionarTarefa(_controller.text);
                     // Limpar o campo de texto após adicionar a tarefa
                     _controller.clear();
@@ -37,7 +39,7 @@ class ListaTarefasScreen extends StatelessWidget {
           ),
           // Lista de tarefas usando um Consumer do Provider para atualização automática
           Expanded(
-            child: Consumer<ListaTarefasModel>(
+            child: Consumer<ListaTarefasController>(
               builder: (context, model, child) {
                 return ListView.builder(
                   itemCount: model.tarefas.length,
