@@ -15,7 +15,7 @@ class _ListaDeComprasViewState extends State<ListaDeComprasView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de Compras'),
+        title: Text('Lista de Supermecado'),
       ),
       body: Column(
         children: <Widget>[
