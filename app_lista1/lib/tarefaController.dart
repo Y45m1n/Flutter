@@ -8,13 +8,16 @@ class ListaTarefasController extends ChangeNotifier {
 
   //Metodos CRUD
   void adicionarTarefa(String descricao) {
-    _tarefas.add(Tarefa(descricao, false));
-    notifyListeners();
+    if ((descricao.trim().isEmpty)) {
+      _tarefas.add(Tarefa(descricao.trim(), false));
+      notifyListeners();
+    }
   }
 
   void marcarComoConcluida(int indice) {
     if (indice >= 0 && indice < _tarefas.length) {
-      _tarefas[indice].concluida = true;
+      _tarefas[indice].concluida = !_tarefas[indice].concluida;
+
       notifyListeners();
     }
   }
