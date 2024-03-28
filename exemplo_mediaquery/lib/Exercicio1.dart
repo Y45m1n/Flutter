@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text("Exercicio 1"),
+          backgroundColor: Colors.pink,
         ),
         body: Column(
           children: [
