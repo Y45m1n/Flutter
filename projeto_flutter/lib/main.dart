@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_flutter/ToBuyListApp.dart';
+
+import 'ViewLogin.dart';
 
 void main() {
-  runApp(ListaDeComprasApp());
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'kkkkk',
+      home: LoginView(), // Definindo LoginView como a tela inicial
+    );
+  }
 }
