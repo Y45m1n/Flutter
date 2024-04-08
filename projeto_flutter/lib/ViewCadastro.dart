@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:projeto_flutter/Model.dart';
+import 'package:sqflite/sqflite.dart';
+import 'BancoDadosCrud.dart'; // Importa a classe BancoDadosCrud
 
 class CadastroView extends StatelessWidget {
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastro'),
+        title: Text(''),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -30,18 +39,21 @@ class CadastroView extends StatelessWidget {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
+                          controller: _nomeController,
                           decoration: InputDecoration(
                             labelText: 'Nome',
                           ),
                         ),
                         SizedBox(height: 12.0),
                         TextFormField(
+                          controller: _cpfController,
                           decoration: InputDecoration(
                             labelText: 'CPF',
                           ),
                         ),
                         SizedBox(height: 12.0),
                         TextFormField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                             labelText: 'Email',
                           ),
@@ -49,22 +61,16 @@ class CadastroView extends StatelessWidget {
                         ),
                         SizedBox(height: 12.0),
                         TextFormField(
+                          controller: _senhaController,
                           decoration: InputDecoration(
                             labelText: 'Senha',
-                          ),
-                          obscureText: true,
-                        ),
-                        SizedBox(height: 12.0),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Confirmar Senha',
                           ),
                           obscureText: true,
                         ),
                         SizedBox(height: 20.0),
                         ElevatedButton(
                           onPressed: () {
-                            // Implementar a lógica de cadastro aqui
+                            _cadastrarUsuario(context);
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -86,4 +92,44 @@ class CadastroView extends StatelessWidget {
       ),
     );
   }
+
+  void _cadastrarUsuario(BuildContext context) async {
+  String nome = _nomeController.text;
+  String cpf = _cpfController.text;
+  String email = _emailController.text;
+  String senha = _senhaController.text;
+
+  // Verifica se todos os campos estão preenchidos
+  if (nome.isNotEmpty && cpf.isNotEmpty && email.isNotEmpty && senha.isNotEmpty) {
+    // Cria um novo usuário
+    ContatoModel novoUsuario = ContatoModel(
+      nome: nome,
+      cpf: cpf,
+      email: email,
+      senha: senha, 
+    );
+
+    // Chama a função de cadastro do banco de dados
+
+await BancoDadosCrud().create(novoUsuario);
+
+
+    // Limpa os campos de entrada após o cadastro
+    _nomeController.clear();
+    _cpfController.clear();
+    _emailController.clear();
+    _senhaController.clear();
+
+    // Mostra uma mensagem de sucesso
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Usuário cadastrado com sucesso!')),
+    );
+  } else {
+    // Mostra uma mensagem de erro se algum campo estiver vazio
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Por favor, preencha todos os campos.')),
+    );
+  }
+}
+
 }

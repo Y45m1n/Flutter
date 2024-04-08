@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'kkkkk',
+      title: 'Login',
       home: LoginView(), // Definindo LoginView como a tela inicial
     );
   }

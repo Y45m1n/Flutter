@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'ViewCadastro.dart'; // Importa a tela de cadastro
+import 'BancoDadosCrud.dart'; // Importa a classe BancoDadosCrud
+import 'Model.dart'; // Importa o modelo de usuário
 
 class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Faça seu login'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -35,10 +38,10 @@ class _LoginFormState extends State<LoginForm> {
         children: <Widget>[
           TextFormField(
             controller: _usernameController,
-            decoration: InputDecoration(labelText: 'Usuario'),
+            decoration: InputDecoration(labelText: 'Usuário'),
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Por favor, digite seu usuario';
+                return 'Por favor, digite seu usuário';
               }
               return null;
             },
@@ -55,18 +58,65 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                // Implement your login logic here
-                // For demonstration purposes, let's print the username and password
-                print('Usuario: ${_usernameController.text}');
-                print('Senha: ${_passwordController.text}');
-                // After successful login, navigate to home page or perform desired actions
-              }
-            },
-            child: Text('Login'),
-          ),
+ElevatedButton(
+  onPressed: () async {
+    String email = _usernameController.text;
+    String senha = _passwordController.text;
+
+    if (await BancoDadosCrud().checkUserByEmailExists(email)) {
+      // Usuário com o e-mail fornecido está cadastrado
+      // Verifique a senha
+      bool senhaCorreta = await DatabaseHelper().checkUserExists(email, senha); // Substituição aqui
+
+      if (senhaCorreta) {
+        // Senha correta, faça login
+        // Navegue para a tela inicial ou execute a lógica necessária
+        Navigator.pushNamed(context, '/home');
+      } else {
+        // Senha incorreta, exiba uma mensagem de erro
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erro de login'),
+              content: Text('Senha incorreta.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      // Usuário não encontrado
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Erro de login'),
+            content: Text('Usuário não cadastrado.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  },
+  child: Text('Login'),
+),
+
+
           SizedBox(height: 8.0),
           Text(
             "Ainda não tem cadastro? Faça agora!",
@@ -76,7 +126,11 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: 8.0),
           ElevatedButton(
             onPressed: () {
-              // Implement your registration navigation here
+              // Navega para a tela de cadastro ao pressionar o botão "Cadastre-se"
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CadastroView()), // Navega para a tela de cadastro
+              );
             },
             child: Text('Cadastre-se'),
           ),
@@ -84,29 +138,4 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('SQLite Demo'),
-      ),
-      body: Center(
-        child: Text('Bem vindo a página inicial!'),
-      ),
-    );
-  }
-}
-
-void main() {
-  runApp(MaterialApp(
-    title: 'Login Demo',
-    initialRoute: '/',
-    routes: {
-      '/': (context) => LoginView(),
-      '/home': (context) => HomePage(),
-    },
-  ));
 }
