@@ -1,0 +1,12 @@
+-Tela login
+    -acessar(email/senha)
+    -registrar(=> tela cadastro)
+
+- Tela cadastro
+    -form(nome/email/senha)
+    -voltar(login)
+
+-Tela Lista de Tarefas (Shared Preferences)
+    -Adicionar Tarefas
+    -Listar Tarefas
+    -Apagar Tarefas
