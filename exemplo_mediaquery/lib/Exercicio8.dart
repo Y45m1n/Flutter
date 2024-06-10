@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
                 description:
                     'Tudo isso no pão de Big Tasty, um delicioso molho com queijo Muçarela, queijo processado sabor Emental, queijo processado sabor Cheddar, cebola fresca, alface americana, tomate e o maior hambúrguer do Méqui. QUE DELÍCIA.',
               ),
-              SizedBox(height: ),
+              SizedBox(height: 10),
             ],
           ),
         ),
